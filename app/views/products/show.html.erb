@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-12 d-none d-lg-block">
+    <ol class="breadcrumb"> 
+      <li class="breadcrumb-item"><a href="/">Featured</a></li>
+      <li class="active breadcrumb-item"><%= @product.title %></li>
+    </ol>
+    <hr>
+  </div> 
+</div>
+<div class="row" id="product-page">
+  <div class="col-md-6 col-lg-5">
+    <div class="d-md-none">
+      <h1><%= @product.title %></h1>
+      <p class="gray-text">Item #<%= @product.sku %></p>
+      <hr>
+    </div>
+    <% if @product.image.attached? %>
+      <%= image_tag url_for(@product.image.variant(resize_to_limit: [700, 900])), alt: @product.title, class: 'product' %>
+    <% end %>
+  </div>
+  <div class="col-md-6 col-lg-7">
+    <h1 class="d-none d-md-block"><%= @product.title %></h1>
+    <p class="gray-text d-none d-md-block">Item #<%= @product.sku %></p>
+    <hr class="d-md-none">
+    <p class="price"><%= number_to_currency @product.price %></p>
+    <p class="star-rating-large five ir">Star Rating</p>
+    <%= form_with url: '/line_items', method: :post do %>
+      <%= hidden_field_tag :product_id, @product.id %>
+        <%= number_field_tag :quantity, 1, min: 1, max: 100 %>
+        <%= button_tag id: 'add-cart', class: 'btn btn-red btn-md' do %>
+          <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+        <% end %>
+    <% end %>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details"
+          aria-selected="true">Details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="specs-tab" data-toggle="tab" href="#specs" role="tab" aria-controls="specs"
+          aria-selected="false">Specs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews"
+          aria-selected="false">Reviews</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="home-tab">
+        <%= simple_format @product.description %>
+      </div>
+      <div class="tab-pane fade" id="specs" role="tabpanel" aria-labelledby="specs-tab">
+        <%= raw Kramdown::Document.new(@product.specs).to_html %>
+      </div>
+      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        Coming soon!
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%= @title + ' | ' if @title %>Human Meat for sell</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+  <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="navbar navbar-expand-md navbar-dark fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="right-nav">
+        <a href="#">Account</a> 
+        <% if customer_signed_in? %>
+          <%= link_to 'Sign Out', destroy_customer_session_path, method: :delete %>
+        <% else %>
+          <%= link_to 'Sign In', new_customer_session_path %>
+        <% end %>
+        <form class="navbar-form form-inline">
+          <a id="cart" href="/cart">Cart 
+            <% if @cart %>
+              <span class="badge"><%= @cart.line_items.count %></span>
+            <% end %>
+          </a>
+          <hr id="cart-hr" class="d-md-none">
+          <input type="search" placeholder="Search" class="form-control" id="search">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render 'shared/get_nutty' if @get_nutty %>
+
+<div class="container">
+  <div id="main" role="main">
+
+    <% if flash[:alert] %>
+      <div id="flash" class="alert"><%= flash[:alert] %></div>
+    <% elsif flash[:notice] %>
+      <div id="flash" class="notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    <%= yield %>
+
+  </div>
+</div>
+<footer>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-3">
+        <h6>Customer Service</h6>
+        <ul>
+          <li><a href="#">Shipping & Delivery</a></li>
+          <li><a href="#">Order Status</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-3">
+        <h6>Policies</h6>
+        <ul>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4 offset-sm-2">
+          <p id="copyright">©LongPig.com</p>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<div id="featured">
+  <h2 class="category">Featured Gifts</h2>
+  <hr>
+</div>
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-md-3 col-sm-4">
+      <%= link_to product do %>
+        <% if product.image.attached? %>
+          <%= image_tag url_for(product.image.variant(resize_to_limit: [500, 500])), alt: product.title %>
+        <% end %>
+        <p class="product"><%= product.title %></p>
+      <% end %>
+      <p class="gray-text"><%= number_to_currency product.price %></p>
+    </div>
+  <% end %>
+</div>

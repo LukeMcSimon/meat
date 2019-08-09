@@ -1,0 +1,80 @@
+<div class="row" id="cart-page">
+  <div class="col-lg-9">
+    <div class="card card-default">
+      <div class="card-header">Your Cart</div>
+      <div class="card-body">
+        <p>Thank you for shopping with us!</p>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="d-none d-md-table-cell"></th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th class="d-none d-md-table-cell">Item Price</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cart.line_items.each do |line_item| %>
+            <tr>
+              <td id="thumbnail-div" class="d-none d-md-table-cell">
+                <%= link_to line_item.product do %>
+                  <%= image_tag url_for(line_item.image.variant(resize_to_limit: [200, 200])), alt: line_item.title, class: 'cart-thumbnail' %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to line_item.product do %>
+                  <p><%= line_item.title %></p>
+                <% end %>
+                <p class="gray-text">Item #<%= line_item.sku %></p>
+              </td>
+              <td>
+                <%= form_with model: line_item, method: :patch, remote: true do |f| %>
+                  <%= f.number_field :quantity, min: 1, max: 100 %>
+                  <%= f.submit 'update' %>
+                <% end %>
+              <%= link_to 'remove', line_item_path(line_item), method: :delete %>
+              </td>
+              <td class="d-none d-md-table-cell"><%= number_to_currency line_item.price %></td>
+              <td class="total-price" data-line-item-id="<%= line_item.id %>"><%= number_to_currency line_item.subtotal %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div> <!-- End left column -->
+  <div class="col-lg-3">
+    <div class="card card-default" id="order-summary">
+      <div class="card-header">Order Summary</div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Subtotal</td>
+            <td id="subtotal"><%= number_to_currency @cart.subtotal %></td>
+          </tr>
+          <tr>
+            <td>Shipping</td>
+            <td>FREE</td>
+          </tr>
+          <tr>
+            <td>Estimated Tax</td>
+            <td>$0.00</td>
+          </tr>
+          <tr class="total-price">
+            <td>Total</td>
+            <td id="total"><%= number_to_currency @cart.total %></td>
+          </tr>
+          <tr class="total-price">
+            <td>Total in Bitcoin</td>
+            <td id="bitcoin-total"><%= @cart.bitcoin_total %> BTC</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      <%= form_with url: '/cart/complete', method: :post do %>
+        <%= submit_tag 'Checkout', id: 'check-out', class: "btn btn-red btn-lg" %>
+      <% end %>
+  </div>
+</div>

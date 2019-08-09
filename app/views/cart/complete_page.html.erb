@@ -1,0 +1,88 @@
+<div class="row" id="cart-page">
+  <div class="col-lg-9">
+      <div class="card card-default">
+      <div class="card-header">Your Order is Complete</div>
+      <div class="card-body">
+        <p>Thank you for shopping with us!  Our staff will be in touch soon to finalize your purchase.</p>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="d-none d-md-table-cell"></th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th class="d-none d-md-table-cell">Item Price</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @order.line_items.each do |line_item| %>
+            <tr>
+              <td id="thumbnail-div" class="d-none d-md-table-cell">
+                <%= link_to line_item.product do %>
+                  <%= image_tag url_for(line_item.image.variant(resize_to_limit: [200, 200])) %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to line_item.product do %>
+                  <p><%= line_item.title %></p>
+                <% end %>
+                <p class="gray-text">Item #<%= line_item.sku %></p>
+              </td>
+              <td>
+                <%= line_item.quantity %>
+              </td>
+              <td class="d-none d-md-table-cell"><%= number_to_currency line_item.price %></td>
+              <td class="total-price"><%= number_to_currency line_item.subtotal %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td>&nbsp;</td>
+            <td>Subtotal</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><%= number_to_currency @order.subtotal %></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>Shipping</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>FREE</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>Estimated Tax</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>$0.00</td>
+          </tr>
+          <tr class="total-price">
+            <td>&nbsp;</td>
+            <td>Total</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><%= number_to_currency @order.total %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> <!-- End left column -->
+  <div class="col-lg-3">
+    <div class="card card-default">
+      <div class="card-header">Sold To</div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <p class="product">
+                <%= @order.email %>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
