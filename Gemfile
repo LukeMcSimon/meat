@@ -61,7 +61,7 @@ gem 'responders', '2.4.1'
 gem 'activeadmin', '~> 2.2'
 
 # Resize image attachments
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.12'
 
 # Use SEO friendly URLs
 gem 'friendly_id', '~> 5.2.5'
